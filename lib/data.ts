@@ -188,13 +188,14 @@ export const testimonials = [
   },
 ] as const;
 
+/** Local assets in /public/demo — avoids broken remote URLs and layout gaps */
 export const beforeAfterImages = {
   before: {
-    src: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1400&q=85",
-    alt: "Living room before renovation",
+    src: "/demo/before.jpg",
+    alt: "Room before renovation visualization",
   },
   after: {
-    src: "https://images.unsplash.com/photo-1618221195710-9f1323a874ca?w=1400&q=85",
-    alt: "Living room after RenoVision AI renovation visualization",
+    src: "/demo/after.jpg",
+    alt: "Room after RenoVision AI visualization",
   },
 } as const;
