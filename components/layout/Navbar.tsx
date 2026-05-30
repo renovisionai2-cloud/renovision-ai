@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BrandLogo } from "@/components/ui/BrandLogo";
+import { NavbarAuthActions } from "@/components/layout/NavbarAuthActions";
 import { navLinks } from "@/lib/data";
 
 export function Navbar() {
@@ -47,14 +49,7 @@ export function Navbar() {
           ))}
         </ul>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          <a href="#contact" className="btn-secondary !px-5 !py-2.5 text-sm">
-            Sign In
-          </a>
-          <a href="#contact" className="btn-primary !px-5 !py-2.5 text-sm">
-            Request Demo
-          </a>
-        </div>
+        <NavbarAuthActions />
 
         <button
           type="button"
@@ -91,13 +86,7 @@ export function Navbar() {
             {link.label}
           </a>
         ))}
-        <a
-          href="#contact"
-          onClick={() => setMenuOpen(false)}
-          className="btn-primary mt-4 w-full py-4 text-center"
-        >
-          Request Demo
-        </a>
+        <NavbarAuthActions onNavigate={() => setMenuOpen(false)} />
       </div>
     </header>
   );

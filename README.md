@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RenoVision AI
 
-## Getting Started
+Premium AI interior visualization app built with Next.js 16, Supabase Auth, and Fal.ai.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Supabase (required for auth)
 
-## Learn More
+1. Create a project at [supabase.com](https://supabase.com).
+2. Copy **Project URL** and **anon public key** from **Settings → API**.
+3. Add to `.env.local`:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. In **Authentication → URL Configuration**, set:
+   - **Site URL:** `http://localhost:3000` (or your Vercel URL)
+   - **Redirect URLs:** `http://localhost:3000/auth/callback`, `https://your-app.vercel.app/auth/callback`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. Enable **Email** provider under **Authentication → Providers** (Google optional).
 
-## Deploy on Vercel
+### Fal.ai (optional — AI generation)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+See `.env.example` for `FAL_KEY` and render settings.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Auth routes
+
+| Route | Description |
+|-------|-------------|
+| `/sign-in` | Email/password login |
+| `/sign-up` | Create account |
+| `/auth/callback` | OAuth & email confirmation handler |
+| `/dashboard` | Protected workspace (middleware + server layout) |
+
+## Deploy to Vercel
+
+```bash
+npx vercel --prod
+```
+
+Set these in **Vercel → Project → Settings → Environment Variables**:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `FAL_KEY` (if using real AI generation)
+- `RENDER_PROVIDER=fal`
+- `NEXT_PUBLIC_RENDER_PROVIDER=fal`
+
+Update Supabase redirect URLs with your production domain after the first deploy.

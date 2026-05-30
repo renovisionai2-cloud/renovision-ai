@@ -159,3 +159,11 @@ body {
 @utility btn-secondary {
   @apply inline-flex items-center justify-center rounded-full border border-border bg-surface-elevated/40 px-8 py-3.5 text-sm font-medium text-foreground transition hover:border-gold/40 hover:text-gold-light;
 }
+
+@utility input-field {
+  @apply w-full rounded-xl border border-border bg-surface-elevated/60 px-4 py-3 text-sm text-foreground placeholder:text-muted/60 outline-none transition focus:border-gold/40 focus:ring-1 focus:ring-gold/20;
+}
+
+@utility dashboard-card {
+  @apply feature-card card-glow flex flex-col gap-4;
+}
