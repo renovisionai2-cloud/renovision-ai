@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { getAuthCallbackUrl } from "@/lib/auth/urls";
 import { createClient } from "@/lib/supabase/client";
 
 export function SignUpForm() {
@@ -35,7 +36,7 @@ export function SignUpForm() {
       password,
       options: {
         data: { full_name: name },
-        emailRedirectTo: `${window.location.origin}/auth/callback?redirect=/dashboard`,
+        emailRedirectTo: getAuthCallbackUrl("/dashboard"),
       },
     });
 
@@ -62,7 +63,7 @@ export function SignUpForm() {
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?redirect=/dashboard`,
+        redirectTo: getAuthCallbackUrl("/dashboard"),
       },
     });
 

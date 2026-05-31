@@ -26,10 +26,15 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
 4. In **Authentication → URL Configuration**, set:
-   - **Site URL:** `http://localhost:3000` (or your Vercel URL)
-   - **Redirect URLs:** `http://localhost:3000/auth/callback`, `https://your-app.vercel.app/auth/callback`
+   - **Site URL:** `https://www.renovisionapp.com`
+   - **Redirect URLs:**
+     - `http://localhost:3000/auth/callback`
+     - `https://www.renovisionapp.com/auth/callback`
+     - `https://renovisionapp.com/auth/callback` (if apex redirects to www)
 
-5. Enable **Email** provider under **Authentication → Providers** (Google optional).
+5. Set `NEXT_PUBLIC_SITE_URL=https://www.renovisionapp.com` in production (Vercel env vars).
+
+6. Enable **Email** provider under **Authentication → Providers** (Google optional).
 
 ### Fal.ai (optional — AI generation)
 

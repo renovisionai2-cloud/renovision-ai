@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useState } from "react";
+import { getAuthErrorMessage } from "@/lib/auth/errors";
+import { getAuthCallbackUrl } from "@/lib/auth/urls";
 import { createClient } from "@/lib/supabase/client";
 
 function SignInFormInner() {
@@ -10,12 +12,20 @@ function SignInFormInner() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") ?? "/dashboard";
   const authError = searchParams.get("error");
+  const authErrorDescription = searchParams.get("error_description");
+  const confirmed = searchParams.get("confirmed");
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(
-    authError === "auth_callback_failed" ? "Authentication failed. Please try again." : null,
+  const [error, setError] = useState<string | null>(() => {
+    const message = getAuthErrorMessage(authError);
+    if (message && authErrorDescription) {
+      return `${message} (${authErrorDescription})`;
+    }
+    return message;
+  });
+  const [message, setMessage] = useState<string | null>(
+    confirmed === "1" ? "Email confirmed. Sign in to access your dashboard." : null,
   );
-  const [message, setMessage] = useState<string | null>(null);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,7 +62,7 @@ function SignInFormInner() {
     setError(null);
     const supabase = createClient();
     const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/callback?redirect=/dashboard/account`,
+      redirectTo: getAuthCallbackUrl("/dashboard/account"),
     });
     setLoading(false);
 
@@ -71,7 +81,7 @@ function SignInFormInner() {
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(redirect)}`,
+        redirectTo: getAuthCallbackUrl(redirect),
       },
     });
 
