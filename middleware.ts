@@ -10,6 +10,6 @@ export const config = {
     "/dashboard/:path*",
     "/sign-in",
     "/sign-up",
-    "/api/render/:path*",
+    "/api/upload/:path*",
   ],
 };

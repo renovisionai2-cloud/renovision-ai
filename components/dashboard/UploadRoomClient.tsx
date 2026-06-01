@@ -15,6 +15,7 @@ import {
   SAMPLE_ROOM_SRC,
   validateRoomUploadFile,
 } from "@/lib/room-upload-store";
+import { syncRoomUploadToServer } from "@/lib/room-upload-server-sync";
 import { uploadStyleOptions, type UploadStyleId } from "@/lib/upload-styles";
 
 type UploadStatus = "idle" | "uploading" | "success" | "error";
@@ -75,6 +76,7 @@ export function UploadRoomClient() {
       setUploadError(null);
       try {
         const record = await persistSampleRoomUpload();
+        await syncRoomUploadToServer(record);
         setPreview((prev) => {
           revokePreview(prev);
           return SAMPLE_ROOM_SRC;
@@ -109,6 +111,7 @@ export function UploadRoomClient() {
 
       try {
         const record = await persistRoomUpload(file);
+        await syncRoomUploadToServer(record);
         setFileName(record.fileName);
         setUploadStatus("success");
       } catch (error) {
@@ -137,6 +140,7 @@ export function UploadRoomClient() {
       setUploadError(null);
       try {
         const record = await persistSampleRoomUpload();
+        await syncRoomUploadToServer(record);
         setPreview((prev) => {
           revokePreview(prev);
           return SAMPLE_ROOM_SRC;

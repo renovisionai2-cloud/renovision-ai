@@ -1,9 +1,9 @@
 "use client";
 
-import { getBeforeImageDataUrl } from "@/lib/generation/before-image";
 import { RenderProviderError } from "@/lib/generation/errors";
 import { renderLog } from "@/lib/generation/logger";
 import { persistGeneratedDesign } from "@/lib/generation/persist-result";
+import { ensureRoomUploadOnServer } from "@/lib/room-upload-server-sync";
 import type {
   RenderProvider,
   RenderRequest,
@@ -52,19 +52,25 @@ export const falClientRenderProvider: RenderProvider = {
   id: "fal",
 
   async submitRender(request: RenderRequest): Promise<RenderSubmission> {
-    const beforeImageDataUrl = await getBeforeImageDataUrl();
+    const uploadMeta = await ensureRoomUploadOnServer();
 
-    renderLog("Submitting render to API", { jobId: request.jobId, styleId: request.styleId });
+    const payload = {
+      jobId: request.jobId,
+      styleId: request.styleId,
+      uploadId: uploadMeta.id,
+    };
+
+    renderLog("Submitting render to API", {
+      jobId: request.jobId,
+      styleId: request.styleId,
+      uploadId: uploadMeta.id,
+      jsonPayloadBytes: JSON.stringify(payload).length,
+    });
 
     const response = await fetch("/api/render/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        jobId: request.jobId,
-        styleId: request.styleId,
-        uploadId: request.uploadId,
-        beforeImageDataUrl,
-      }),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {

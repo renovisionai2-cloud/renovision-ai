@@ -4,8 +4,11 @@
  * calls while keeping `RoomUploadRecord` as the app-facing contract.
  */
 
+import { SERVER_ROOM_UPLOAD_MAX_BYTES } from "@/lib/generation/request-limits";
+
 export const ROOM_UPLOAD_META_KEY = "renovision-room-upload-meta";
-export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+/** Aligned with Vercel function body limit for server-side room sync. */
+export const MAX_UPLOAD_BYTES = SERVER_ROOM_UPLOAD_MAX_BYTES;
 export const ACCEPTED_UPLOAD_MIME_TYPES = [
   "image/jpeg",
   "image/png",
@@ -104,7 +107,7 @@ export function validateRoomUploadFile(file: File): UploadValidationResult {
   if (file.size > MAX_UPLOAD_BYTES) {
     return {
       ok: false,
-      error: "File must be 10MB or smaller.",
+      error: "File must be 4 MB or smaller.",
     };
   }
 
@@ -172,6 +175,11 @@ export async function persistSampleRoomUpload(): Promise<RoomUploadRecord> {
 
   writeRoomUploadMeta(record);
   return record;
+}
+
+/** Reads the persisted upload blob from IndexedDB (upload source only). */
+export async function getRoomUploadBlob(storageKey: string): Promise<Blob | null> {
+  return idbGetBlob(storageKey);
 }
 
 /** Resolves the persisted before-image URL for visualization steps. */
