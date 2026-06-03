@@ -70,19 +70,29 @@ export async function POST(request: Request) {
 
     const buffer = Buffer.from(await file.arrayBuffer());
 
+    const mimeType = file.type || "image/jpeg";
+
     setCachedRoomUpload({
       uploadId,
       storageKey,
-      mimeType: file.type || "image/jpeg",
+      mimeType,
       sizeBytes: buffer.length,
       buffer,
       cachedAt: Date.now(),
+    });
+
+    console.info("[renovision:diag:upload] after upload cached", {
+      uploadId,
+      mimeType,
+      sizeBytes: buffer.length,
+      storageKey,
     });
 
     console.info("[renovision:upload] Room image cached on server", {
       uploadId,
       storageKey,
       sizeBytes: buffer.length,
+      mimeType,
     });
 
     return NextResponse.json({ ok: true, uploadId, storageKey, sizeBytes: buffer.length });

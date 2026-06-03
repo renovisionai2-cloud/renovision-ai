@@ -75,6 +75,18 @@ export const falServerProvider: ServerRenderProvider = {
     fal.config({ credentials: config.falKey! });
 
     const prompt = buildStyleRenderPrompt(input.styleId);
+    const imageUrl = input.beforeImageDataUrl;
+
+    console.info("[renovision:diag:fal-provider] before fal.queue.submit", {
+      modelId: config.falModelId,
+      prompt,
+      image_url_length: imageUrl.length,
+      image_url_starts_with_data_image: imageUrl.startsWith("data:image/"),
+      uploadId: input.uploadId,
+      jobId: input.jobId,
+      styleId: input.styleId,
+    });
+
     renderLog("Fal submit", {
       jobId: input.jobId,
       modelId: config.falModelId,
@@ -84,7 +96,7 @@ export const falServerProvider: ServerRenderProvider = {
     try {
       const submission = await fal.queue.submit(config.falModelId, {
         input: {
-          image_url: input.beforeImageDataUrl,
+          image_url: imageUrl,
           prompt,
           strength: config.falStrength,
           guidance_scale: config.falGuidanceScale,
