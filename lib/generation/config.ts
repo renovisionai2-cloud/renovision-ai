@@ -45,7 +45,7 @@ export function getRenderServerConfig(): RenderServerConfig {
     falKey,
     falModelId:
       process.env.FAL_MODEL_ID?.trim() || "fal-ai/flux/dev/image-to-image",
-    falStrength: parseNumber(process.env.FAL_IMAGE_STRENGTH, 0.95),
+    falStrength: parseNumber(process.env.FAL_IMAGE_STRENGTH, 0.35),
     falGuidanceScale: parseNumber(process.env.FAL_GUIDANCE_SCALE, 3.5),
     falNumInferenceSteps: Math.round(parseNumber(process.env.FAL_INFERENCE_STEPS, 40)),
     falOutputFormat: process.env.FAL_OUTPUT_FORMAT === "png" ? "png" : "jpeg",
