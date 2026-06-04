@@ -6,9 +6,12 @@ export type RenderServerConfig = {
   provider: RenderProviderId;
   falKey: string | null;
   falModelId: string;
+  /** Used only by fal-ai/flux/dev/image-to-image. */
   falStrength: number;
   falGuidanceScale: number;
   falNumInferenceSteps: number;
+  /** Used only by fal-ai/flux-kontext/dev. */
+  falResolutionMode: "auto" | "match_input";
   falOutputFormat: "jpeg" | "png";
   requestTimeoutMs: number;
   pollIntervalMs: number;
@@ -44,10 +47,12 @@ export function getRenderServerConfig(): RenderServerConfig {
     provider: provider === "fal" && !falKey ? "mock" : provider,
     falKey,
     falModelId:
-      process.env.FAL_MODEL_ID?.trim() || "fal-ai/flux/dev/image-to-image",
+      process.env.FAL_MODEL_ID?.trim() || "fal-ai/flux-pro/kontext",
     falStrength: parseNumber(process.env.FAL_IMAGE_STRENGTH, 0.35),
     falGuidanceScale: parseNumber(process.env.FAL_GUIDANCE_SCALE, 3.5),
-    falNumInferenceSteps: Math.round(parseNumber(process.env.FAL_INFERENCE_STEPS, 40)),
+    falNumInferenceSteps: Math.round(parseNumber(process.env.FAL_INFERENCE_STEPS, 28)),
+    falResolutionMode:
+      process.env.FAL_RESOLUTION_MODE === "auto" ? "auto" : "match_input",
     falOutputFormat: process.env.FAL_OUTPUT_FORMAT === "png" ? "png" : "jpeg",
     requestTimeoutMs: parseNumber(process.env.RENDER_REQUEST_TIMEOUT_MS, 120_000),
     pollIntervalMs: parseNumber(process.env.RENDER_POLL_INTERVAL_MS, 2_000),

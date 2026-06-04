@@ -5,6 +5,11 @@ import { getRenderServerConfig } from "@/lib/generation/config";
 import { RenderProviderError } from "@/lib/generation/errors";
 import { renderError, renderLog } from "@/lib/generation/logger";
 import { buildStyleRenderPrompt } from "@/lib/generation/style-prompts";
+import { ensureFalHostedImageUrl } from "@/lib/generation/providers/server/fal-hosted-image";
+import {
+  buildFalQueueInput,
+  getFalModelFamily,
+} from "@/lib/generation/providers/server/fal-model-input";
 import type {
   ServerRenderProvider,
   ServerRenderResult,
@@ -75,35 +80,32 @@ export const falServerProvider: ServerRenderProvider = {
     fal.config({ credentials: config.falKey! });
 
     const prompt = buildStyleRenderPrompt(input.styleId);
-    const imageUrl = input.beforeImageDataUrl;
+    const hostedImageUrl = await ensureFalHostedImageUrl(input.beforeImageDataUrl);
+    const falInput = buildFalQueueInput(config, prompt, hostedImageUrl);
 
     console.info("[renovision:diag:fal-provider] before fal.queue.submit", {
       modelId: config.falModelId,
+      modelFamily: getFalModelFamily(config.falModelId),
       prompt,
-      image_url_length: imageUrl.length,
-      image_url_starts_with_data_image: imageUrl.startsWith("data:image/"),
+      image_url_length: hostedImageUrl.length,
+      image_url_starts_with_data_image: hostedImageUrl.startsWith("data:image/"),
+      image_url_is_hosted: hostedImageUrl.startsWith("https://"),
       uploadId: input.uploadId,
       jobId: input.jobId,
       styleId: input.styleId,
+      falInputKeys: Object.keys(falInput),
     });
 
     renderLog("Fal submit", {
       jobId: input.jobId,
       modelId: config.falModelId,
+      modelFamily: getFalModelFamily(config.falModelId),
       styleId: input.styleId,
     });
 
     try {
       const submission = await fal.queue.submit(config.falModelId, {
-        input: {
-          image_url: imageUrl,
-          prompt,
-          strength: config.falStrength,
-          guidance_scale: config.falGuidanceScale,
-          num_inference_steps: config.falNumInferenceSteps,
-          output_format: config.falOutputFormat,
-          num_images: 1,
-        },
+        input: falInput,
         webhookUrl: config.webhookUrl ?? undefined,
       });
 
