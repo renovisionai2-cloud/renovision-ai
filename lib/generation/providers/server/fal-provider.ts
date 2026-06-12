@@ -10,6 +10,7 @@ import {
   buildFalQueueInput,
   getFalModelFamily,
 } from "@/lib/generation/providers/server/fal-model-input";
+import { logFalQueueResultDiagnostics } from "@/lib/generation/providers/server/fal-result-diagnostics";
 import type {
   ServerRenderProvider,
   ServerRenderResult,
@@ -189,6 +190,13 @@ export const falServerProvider: ServerRenderProvider = {
     try {
       const result = await fal.queue.result(modelId, { requestId });
       const afterImageUrl = extractAfterImageUrl(result.data);
+
+      logFalQueueResultDiagnostics({
+        requestId,
+        modelId,
+        result,
+        selectedOutputImageUrl: afterImageUrl,
+      });
 
       if (!afterImageUrl) {
         throw new RenderProviderError(
