@@ -1,0 +1,18 @@
+{
+  "variantId": "variant-c",
+  "label": "Variant C — Aggressive redesign",
+  "shortLabel": "C · Aggressive",
+  "modelId": "fal-ai/flux-pro/kontext",
+  "guidanceScale": 3.5,
+  "prompt": "Transform this room into a completely renovated luxury modern kitchen while preserving only the architectural structure. All visible finishes, cabinetry, lighting, colors, and materials should appear newly renovated. Keep room dimensions, walls, windows, ceiling height, and camera angle unchanged. Do NOT generate outdoor scenes, streets, bridges, cities, landscapes, or fantasy environments. Create a highly realistic luxury interior rendering.",
+  "requestId": "019ebecf-cd6e-7453-ab89-141beb2eefe1",
+  "falRequestId": "019ebecf-cd6e-7453-ab89-141beb2eefe1",
+  "elapsedMs": 12470,
+  "inputSizeBytes": 1076510,
+  "outputUrl": "https://v3b.fal.media/files/b/0a9e1340/eoa6kou2X5RoeQxEFoI4i_df25a3b26d474966b59628afff42f6af.jpg",
+  "outputWidth": 1504,
+  "outputHeight": 688,
+  "outputLocalFile": "variant-c.jpg",
+  "outputSizeBytes": 217180,
+  "seed": 4026286830
+}

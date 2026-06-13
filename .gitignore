@@ -34,3 +34,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.vercel
+
+# prompt experiment scratch (keep kitchen-before.jpg)
+/scripts/prompt-experiment-input/Screenshot*
+/scripts/prompt-experiment-input/kitchen-input-*
+/scripts/prompt-experiment-input/test-crop.png

@@ -1,0 +1,18 @@
+{
+  "variantId": "variant-b",
+  "label": "Variant B — Strong redesign",
+  "shortLabel": "B · Strong",
+  "modelId": "fal-ai/flux-pro/kontext",
+  "guidanceScale": 3.5,
+  "prompt": "Redesign this room into a high-end luxury modern kitchen. Preserve: room dimensions, walls, windows, ceiling, camera angle. Replace: cabinetry, countertops, backsplash, flooring, lighting, appliances, hardware, finishes. The result should look like a professionally renovated kitchen worth $100,000+. Do NOT generate outdoor scenes, streets, bridges, cities, landscapes, or fantasy environments. Create a highly realistic luxury interior rendering.",
+  "requestId": "019ebecf-92cf-7422-ac6d-1d77b49b42c9",
+  "falRequestId": "019ebecf-92cf-7422-ac6d-1d77b49b42c9",
+  "elapsedMs": 14615,
+  "inputSizeBytes": 1076510,
+  "outputUrl": "https://v3b.fal.media/files/b/0a9e1344/hjj6eoocQtkfvV1kvXBFX_8da018bd547f4e3a93a99daff76dd54f.jpg",
+  "outputWidth": 1504,
+  "outputHeight": 688,
+  "outputLocalFile": "variant-b.jpg",
+  "outputSizeBytes": 221906,
+  "seed": 352660048
+}

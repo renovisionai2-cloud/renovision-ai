@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kitchen Prompt Experiment — A / B / C</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #0f1115; color: #e8e6e3; }
+    body { margin: 0; padding: 24px; }
+    h1 { font-size: 1.5rem; margin: 0 0 8px; }
+    .sub { color: #9ca3af; margin: 0 0 24px; font-size: 0.95rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .card { margin: 0; background: #1a1d24; border: 1px solid #2d3340; border-radius: 12px; overflow: hidden; }
+    .card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; background: #000; }
+    figcaption { padding: 12px 14px 16px; }
+    figcaption strong { display: block; margin-bottom: 4px; }
+    .meta { font-size: 0.8rem; color: #b8954a; }
+    .prompt { font-size: 0.78rem; color: #9ca3af; line-height: 1.45; margin: 10px 0 0; max-height: 120px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <h1>Kitchen prompt experiment</h1>
+  <p class="sub">Model: fal-ai/flux-pro/kontext · guidance 3.5 · 2026-06-13T02:29:23.148Z</p>
+  <div class="grid">
+    <figure class="card">
+      <img src="input-before.jpg" alt="Before (input)" loading="lazy" />
+      <figcaption>
+        <strong>Before (input)</strong>
+        <span class="meta">—×— · 1051 KB</span>
+        <p class="prompt">Original kitchen photo (construction in progress).</p>
+      </figcaption>
+    </figure>
+
+    <figure class="card">
+      <img src="variant-a.jpg" alt="A · Production" loading="lazy" />
+      <figcaption>
+        <strong>A · Production</strong>
+        <span class="meta">1504×688 · seed 369025040 · 67.8s</span>
+        <p class="prompt">Redesign this exact room into a realistic Modern interior design. modern interior design with clean lines, neutral palette, contemporary furniture, minimal clutter, and balanced natural lighting Keep the SAME room structure, walls, windows, floor, ceiling, and camera angle. Only change furniture, finishes, lighting, decor, cabinetry, colors, and materials. Do NOT generate outdoor scenes, streets, bridges, cities, landscapes, or fantasy environments. Preserve the original architecture and room proportions exactly. Create a highly realistic luxury interior rendering.</p>
+      </figcaption>
+    </figure>
+
+    <figure class="card">
+      <img src="variant-b.jpg" alt="B · Strong" loading="lazy" />
+      <figcaption>
+        <strong>B · Strong</strong>
+        <span class="meta">1504×688 · seed 352660048 · 14.6s</span>
+        <p class="prompt">Redesign this room into a high-end luxury modern kitchen. Preserve: room dimensions, walls, windows, ceiling, camera angle. Replace: cabinetry, countertops, backsplash, flooring, lighting, appliances, hardware, finishes. The result should look like a professionally renovated kitchen worth $100,000+. Do NOT generate outdoor scenes, streets, bridges, cities, landscapes, or fantasy environments. Create a highly realistic luxury interior rendering.</p>
+      </figcaption>
+    </figure>
+
+    <figure class="card">
+      <img src="variant-c.jpg" alt="C · Aggressive" loading="lazy" />
+      <figcaption>
+        <strong>C · Aggressive</strong>
+        <span class="meta">1504×688 · seed 4026286830 · 12.5s</span>
+        <p class="prompt">Transform this room into a completely renovated luxury modern kitchen while preserving only the architectural structure. All visible finishes, cabinetry, lighting, colors, and materials should appear newly renovated. Keep room dimensions, walls, windows, ceiling height, and camera angle unchanged. Do NOT generate outdoor scenes, streets, bridges, cities, landscapes, or fantasy environments. Create a highly realistic luxury interior rendering.</p>
+      </figcaption>
+    </figure></div>
+</body>
+</html>

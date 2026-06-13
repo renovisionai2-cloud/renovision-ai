@@ -1,0 +1,63 @@
+{
+  "generatedAt": "2026-06-13T02:29:23.148Z",
+  "modelId": "fal-ai/flux-pro/kontext",
+  "guidanceScale": 3.5,
+  "inputPath": "/Users/bobitadindial/.cursor/projects/empty-window/renovision-ai/scripts/prompt-experiment-input/kitchen-before.jpg",
+  "inputHostedUrl": "https://v3b.fal.media/files/b/0a9e1336/ufhknQFoaGjOG-h7ejfd-_kitchen-before.jpg",
+  "variants": [
+    {
+      "variantId": "variant-a",
+      "label": "Variant A — Current production prompt",
+      "shortLabel": "A · Production",
+      "modelId": "fal-ai/flux-pro/kontext",
+      "guidanceScale": 3.5,
+      "prompt": "Redesign this exact room into a realistic Modern interior design. modern interior design with clean lines, neutral palette, contemporary furniture, minimal clutter, and balanced natural lighting Keep the SAME room structure, walls, windows, floor, ceiling, and camera angle. Only change furniture, finishes, lighting, decor, cabinetry, colors, and materials. Do NOT generate outdoor scenes, streets, bridges, cities, landscapes, or fantasy environments. Preserve the original architecture and room proportions exactly. Create a highly realistic luxury interior rendering.",
+      "requestId": "019ebece-8900-7930-84b1-ccf1ee29aff9",
+      "falRequestId": "019ebece-8900-7930-84b1-ccf1ee29aff9",
+      "elapsedMs": 67807,
+      "inputSizeBytes": 1076510,
+      "outputUrl": "https://v3b.fal.media/files/b/0a9e133d/1dKJax1yYBBzW6jX2kBa6_98bfd905f1f840b89a1665fe8574abe7.jpg",
+      "outputWidth": 1504,
+      "outputHeight": 688,
+      "outputLocalFile": "variant-a.jpg",
+      "outputSizeBytes": 198598,
+      "seed": 369025040
+    },
+    {
+      "variantId": "variant-b",
+      "label": "Variant B — Strong redesign",
+      "shortLabel": "B · Strong",
+      "modelId": "fal-ai/flux-pro/kontext",
+      "guidanceScale": 3.5,
+      "prompt": "Redesign this room into a high-end luxury modern kitchen. Preserve: room dimensions, walls, windows, ceiling, camera angle. Replace: cabinetry, countertops, backsplash, flooring, lighting, appliances, hardware, finishes. The result should look like a professionally renovated kitchen worth $100,000+. Do NOT generate outdoor scenes, streets, bridges, cities, landscapes, or fantasy environments. Create a highly realistic luxury interior rendering.",
+      "requestId": "019ebecf-92cf-7422-ac6d-1d77b49b42c9",
+      "falRequestId": "019ebecf-92cf-7422-ac6d-1d77b49b42c9",
+      "elapsedMs": 14615,
+      "inputSizeBytes": 1076510,
+      "outputUrl": "https://v3b.fal.media/files/b/0a9e1344/hjj6eoocQtkfvV1kvXBFX_8da018bd547f4e3a93a99daff76dd54f.jpg",
+      "outputWidth": 1504,
+      "outputHeight": 688,
+      "outputLocalFile": "variant-b.jpg",
+      "outputSizeBytes": 221906,
+      "seed": 352660048
+    },
+    {
+      "variantId": "variant-c",
+      "label": "Variant C — Aggressive redesign",
+      "shortLabel": "C · Aggressive",
+      "modelId": "fal-ai/flux-pro/kontext",
+      "guidanceScale": 3.5,
+      "prompt": "Transform this room into a completely renovated luxury modern kitchen while preserving only the architectural structure. All visible finishes, cabinetry, lighting, colors, and materials should appear newly renovated. Keep room dimensions, walls, windows, ceiling height, and camera angle unchanged. Do NOT generate outdoor scenes, streets, bridges, cities, landscapes, or fantasy environments. Create a highly realistic luxury interior rendering.",
+      "requestId": "019ebecf-cd6e-7453-ab89-141beb2eefe1",
+      "falRequestId": "019ebecf-cd6e-7453-ab89-141beb2eefe1",
+      "elapsedMs": 12470,
+      "inputSizeBytes": 1076510,
+      "outputUrl": "https://v3b.fal.media/files/b/0a9e1340/eoa6kou2X5RoeQxEFoI4i_df25a3b26d474966b59628afff42f6af.jpg",
+      "outputWidth": 1504,
+      "outputHeight": 688,
+      "outputLocalFile": "variant-c.jpg",
+      "outputSizeBytes": 217180,
+      "seed": 4026286830
+    }
+  ]
+}
