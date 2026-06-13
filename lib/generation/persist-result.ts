@@ -4,14 +4,9 @@ import { copyDesignImageBlob, saveDesignImageFromUrl } from "@/lib/design-image-
 import { addGeneratedDesign } from "@/lib/generated-designs-store";
 import type { RenderRequest, RenderResult } from "@/lib/generation/types";
 import { STYLE_GENERATION_CONTEXT } from "@/lib/generation/style-context";
-import {
-  getRoomUploadMeta,
-  SAMPLE_ROOM_SRC,
-} from "@/lib/room-upload-store";
+import { getRoomUploadMeta } from "@/lib/room-upload-store";
 import type { UploadStyleId } from "@/lib/upload-styles";
 import { RenderProviderError } from "@/lib/generation/errors";
-
-const FALLBACK_AFTER = "/demo/after.jpg";
 
 function formatCreatedDate(date: Date): string {
   return date.toLocaleDateString("en-US", {
@@ -38,21 +33,18 @@ export async function persistGeneratedDesign(
 
   let beforeImage = request.beforeImageUrl;
   let beforeStorageKey: string | undefined;
-  let afterImage = FALLBACK_AFTER;
+  let afterImage: string;
   let afterStorageKey: string | undefined;
 
   if (uploadMeta?.source === "upload" && uploadMeta.storageKey) {
     beforeStorageKey = `design-before-${id}`;
     await copyDesignImageBlob(uploadMeta.storageKey, beforeStorageKey);
-    beforeImage = SAMPLE_ROOM_SRC;
-  } else {
-    beforeImage = SAMPLE_ROOM_SRC;
   }
 
   try {
     afterStorageKey = `design-after-${id}`;
     await saveDesignImageFromUrl(afterImageUrl, afterStorageKey);
-    afterImage = FALLBACK_AFTER;
+    afterImage = afterImageUrl;
   } catch {
     if (!afterImageUrl.startsWith("http")) {
       throw new RenderProviderError(
