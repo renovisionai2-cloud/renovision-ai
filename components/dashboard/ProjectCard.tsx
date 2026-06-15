@@ -1,11 +1,11 @@
 import Link from "next/link";
-import type { DemoProject } from "@/lib/projects";
+import type { Project } from "@/lib/projects";
 
 type ProjectCardProps = {
-  project: DemoProject;
+  project: Project;
 };
 
-function statusStyles(status: DemoProject["status"]) {
+function statusStyles(status: Project["status"]) {
   if (status === "Active") {
     return "border-gold/30 bg-gold/10 text-gold";
   }

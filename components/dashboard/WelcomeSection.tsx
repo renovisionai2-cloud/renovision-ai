@@ -5,19 +5,15 @@ import { useCallback, useEffect, useState } from "react";
 import { useDashboardUser } from "@/components/dashboard/DashboardShell";
 import { SavedDesignsCountLabel } from "@/components/dashboard/SavedDesignsCount";
 import { DESIGN_CATALOG_CHANGED_EVENT, getSavedDesignsCount } from "@/lib/design-variations-store";
-import { demoProjects } from "@/lib/projects";
 import { PROJECT_DESIGN_SAVED_EVENT } from "@/lib/project-design-store";
-import { demoSavedDesigns } from "@/lib/saved-designs";
 
 export function WelcomeSection() {
   const { welcomeName } = useDashboardUser();
-  const [activeProjects, setActiveProjects] = useState(
-    () => demoProjects.filter((project) => project.status === "Active").length,
-  );
-  const [savedDesigns, setSavedDesigns] = useState(demoSavedDesigns.length);
+  const [activeProjects, setActiveProjects] = useState(0);
+  const [savedDesigns, setSavedDesigns] = useState(0);
 
   const refreshStats = useCallback(() => {
-    setActiveProjects(demoProjects.filter((project) => project.status === "Active").length);
+    setActiveProjects(0);
     setSavedDesigns(getSavedDesignsCount());
   }, []);
 

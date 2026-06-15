@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createRenderRequest } from "@/lib/generation/queue";
 import {
@@ -11,8 +11,6 @@ import {
   getPersistedBeforeImageUrl,
   getRoomUploadMeta,
   persistRoomUpload,
-  persistSampleRoomUpload,
-  SAMPLE_ROOM_SRC,
   validateRoomUploadFile,
 } from "@/lib/room-upload-store";
 import { syncRoomUploadToServer } from "@/lib/room-upload-server-sync";
@@ -22,11 +20,9 @@ type UploadStatus = "idle" | "uploading" | "success" | "error";
 
 export function UploadRoomClient() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
   const uploadSectionRef = useRef<HTMLElement>(null);
   const previewRef = useRef<string | null>(null);
-  const sampleAppliedRef = useRef(false);
   const hydratedRef = useRef(false);
 
   const [preview, setPreview] = useState<string | null>(null);
@@ -66,29 +62,6 @@ export function UploadRoomClient() {
       setUploadStatus("success");
     })();
   }, [revokePreview]);
-
-  useEffect(() => {
-    if (searchParams.get("sample") !== "1" || sampleAppliedRef.current) return;
-    sampleAppliedRef.current = true;
-
-    void (async () => {
-      setUploadStatus("uploading");
-      setUploadError(null);
-      try {
-        const record = await persistSampleRoomUpload();
-        await syncRoomUploadToServer(record);
-        setPreview((prev) => {
-          revokePreview(prev);
-          return SAMPLE_ROOM_SRC;
-        });
-        setFileName(record.fileName);
-        setUploadStatus("success");
-      } catch {
-        setUploadStatus("error");
-        setUploadError("Unable to load the sample room.");
-      }
-    })();
-  }, [searchParams, revokePreview]);
 
   const handleFile = useCallback(
     async (file: File) => {
@@ -132,26 +105,6 @@ export function UploadRoomClient() {
     setDragOver(false);
     const file = e.dataTransfer.files[0];
     if (file) void handleFile(file);
-  };
-
-  const useSampleRoom = () => {
-    void (async () => {
-      setUploadStatus("uploading");
-      setUploadError(null);
-      try {
-        const record = await persistSampleRoomUpload();
-        await syncRoomUploadToServer(record);
-        setPreview((prev) => {
-          revokePreview(prev);
-          return SAMPLE_ROOM_SRC;
-        });
-        setFileName(record.fileName);
-        setUploadStatus("success");
-      } catch {
-        setUploadStatus("error");
-        setUploadError("Unable to load the sample room.");
-      }
-    })();
   };
 
   const onGenerate = async () => {
@@ -251,7 +204,7 @@ export function UploadRoomClient() {
             </>
           )}
 
-          <div className="mt-6 flex w-full max-w-xs flex-col gap-2 sm:flex-row sm:max-w-none sm:justify-center">
+          <div className="mt-6 flex w-full max-w-xs justify-center sm:max-w-none">
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
@@ -259,14 +212,6 @@ export function UploadRoomClient() {
               className="btn-primary w-full sm:w-auto disabled:cursor-not-allowed disabled:opacity-60"
             >
               {preview ? "Change Photo" : "Choose File"}
-            </button>
-            <button
-              type="button"
-              onClick={useSampleRoom}
-              disabled={isUploading || isStartingGeneration}
-              className="btn-secondary w-full sm:w-auto disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              Use Sample Room
             </button>
           </div>
           {fileName && (

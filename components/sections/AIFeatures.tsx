@@ -1,9 +1,8 @@
 import { FeatureIcon } from "@/components/icons/FeatureIcons";
-import { BeforeAfterSlider } from "@/components/ui/BeforeAfterSlider";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { SectionShell } from "@/components/ui/SectionShell";
-import { aiFeatures, beforeAfterImages } from "@/lib/data";
+import { aiFeatures } from "@/lib/data";
 
 export function AIFeatures() {
   return (
@@ -17,13 +16,10 @@ export function AIFeatures() {
       </FadeIn>
 
       <FadeIn delay={100} className="mt-12 lg:mt-16">
-        <div className="premium-frame overflow-hidden rounded-3xl bg-surface-elevated/30 p-1 sm:p-1.5">
-          <BeforeAfterSlider
-            beforeSrc={beforeAfterImages.before.src}
-            afterSrc={beforeAfterImages.after.src}
-            beforeAlt={beforeAfterImages.before.alt}
-            afterAlt={beforeAfterImages.after.alt}
-          />
+        <div className="premium-frame flex min-h-[240px] items-center justify-center overflow-hidden rounded-3xl bg-surface-elevated/30 p-8 text-center sm:min-h-[320px]">
+          <p className="max-w-lg text-sm leading-relaxed text-muted sm:text-base">
+            Generate photorealistic room designs from your own photos — no stock placeholders.
+          </p>
         </div>
       </FadeIn>
 

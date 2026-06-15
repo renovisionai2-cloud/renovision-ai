@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DashboardCard } from "@/components/dashboard/DashboardCard";
 import { SavedDesignsCountLabel } from "@/components/dashboard/SavedDesignsCount";
-import { WelcomeSection } from "@/components/dashboard/WelcomeSection";import { demoSavedDesigns } from "@/lib/saved-designs";
+import { WelcomeSection } from "@/components/dashboard/WelcomeSection";
 import {
   BillingIcon,
   DesignsIcon,
@@ -10,6 +10,7 @@ import {
   SupportIcon,
   UploadRoomIcon,
 } from "@/components/icons/DashboardIcons";
+
 export const metadata: Metadata = {
   title: "Dashboard | RenoVision AI",
   description: "Manage your RenoVision AI projects, designs, and subscription.",
@@ -29,8 +30,6 @@ export default function DashboardPage() {
             icon={<UploadRoomIcon />}
             actionLabel="Upload Photo"
             actionHref="/dashboard/upload"
-            secondaryActionLabel="Use Sample Room"
-            secondaryActionHref="/dashboard/upload?sample=1"
           />
         </div>
 
@@ -38,7 +37,7 @@ export default function DashboardPage() {
           title="My Projects"
           description="View and manage all your room visualizations, comparisons, and client-ready exports."
           icon={<ProjectsIcon />}
-          meta="2 active · 1 draft"
+          meta="0 active · 0 draft"
           actionLabel="View Projects"
           actionHref="/dashboard/projects"
         />
@@ -47,7 +46,7 @@ export default function DashboardPage() {
           title="Saved Designs"
           description="Browse your favorite AI-generated styles, palettes, and before/after comparisons."
           icon={<DesignsIcon />}
-          meta={<SavedDesignsCountLabel fallback={demoSavedDesigns.length} />}
+          meta={<SavedDesignsCountLabel fallback={0} />}
           actionLabel="Open Gallery"
           actionHref="/dashboard/designs"
           secondaryActionLabel="Export All"

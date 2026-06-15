@@ -1,6 +1,6 @@
 import { getGeneratedDesignById, getAllGeneratedDesigns } from "@/lib/generated-designs-store";
 import { getProjectIdForDesign, PROJECT_DESIGN_SAVED_EVENT, saveDesignToProject } from "@/lib/project-design-store";
-import { demoSavedDesigns, getDesignById, type SavedDesign } from "@/lib/saved-designs";
+import type { SavedDesign } from "@/lib/saved-designs";
 
 export const DESIGN_VARIATIONS_KEY = "renovision-design-variations";
 export const DESIGN_CATALOG_CHANGED_EVENT = "renovision-design-catalog-changed";
@@ -50,7 +50,7 @@ export function getBaseStyleName(styleName: string): string {
   return styleName.replace(/\sv\d+$/i, "").trim();
 }
 
-function formatDemoDate(date: Date): string {
+function formatCreatedDate(date: Date): string {
   return date.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
@@ -67,11 +67,11 @@ export function getVariationById(designId: string): StoredDesignVariation | unde
 }
 
 export function resolveDesignById(designId: string): SavedDesign | undefined {
-  return getDesignById(designId) ?? getVariationById(designId) ?? getGeneratedDesignById(designId);
+  return getGeneratedDesignById(designId) ?? getVariationById(designId);
 }
 
 export function getGalleryDesigns(): SavedDesign[] {
-  return [...demoSavedDesigns, ...getAllVariations(), ...getAllGeneratedDesigns()];
+  return [...getAllGeneratedDesigns(), ...getAllVariations()];
 }
 
 export function getSavedDesignsCount(): number {
@@ -116,7 +116,7 @@ export function createDesignVariation(source: SavedDesign): CreateVariationResul
     version,
     roomName: source.roomName,
     styleName: `${baseStyle} v${version}`,
-    createdAt: formatDemoDate(new Date()),
+    createdAt: formatCreatedDate(new Date()),
     beforeImage: source.beforeImage,
     afterImage: source.afterImage,
     projectName: source.projectName,

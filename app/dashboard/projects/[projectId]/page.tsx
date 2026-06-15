@@ -6,10 +6,10 @@ import {
   ProjectDesignsSection,
 } from "@/components/dashboard/ProjectDesignsSection";
 import {
-  demoProjects,
-  getDesignsForProject,
-  getProjectById,
-  type DemoProject,
+  getProjectDefinition,
+  listCatalogProjects,
+  PROJECT_CATALOG,
+  type Project,
 } from "@/lib/projects";
 
 type PageProps = {
@@ -17,12 +17,12 @@ type PageProps = {
 };
 
 export function generateStaticParams() {
-  return demoProjects.map((project) => ({ projectId: project.id }));
+  return PROJECT_CATALOG.map((project) => ({ projectId: project.id }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { projectId } = await params;
-  const project = getProjectById(projectId);
+  const project = getProjectDefinition(projectId);
   return {
     title: project ? `${project.name} | RenoVision AI` : "Project | RenoVision AI",
     description: project
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-function statusStyles(status: DemoProject["status"]) {
+function statusStyles(status: Project["status"]) {
   if (status === "Active") {
     return "border-gold/30 bg-gold/10 text-gold";
   }
@@ -40,13 +40,19 @@ function statusStyles(status: DemoProject["status"]) {
 
 export default async function ProjectDetailPage({ params }: PageProps) {
   const { projectId } = await params;
-  const project = getProjectById(projectId);
+  const definition = getProjectDefinition(projectId);
 
-  if (!project) {
+  if (!definition) {
     notFound();
   }
 
-  const designs = getDesignsForProject(projectId);
+  const project =
+    listCatalogProjects().find((entry) => entry.id === projectId) ?? {
+      ...definition,
+      status: "Active" as const,
+      lastUpdated: "—",
+      designCount: 0,
+    };
 
   return (
     <>
@@ -98,14 +104,14 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                 </span>
                 <ProjectDesignCount
                   projectId={projectId}
-                  seedDesigns={designs}
-                  fallback={project.designCount}
+                  seedDesigns={[]}
+                  fallback={0}
                 />
               </li>
             </ul>
           </section>
 
-          <ProjectDesignsSection projectId={projectId} seedDesigns={designs} />
+          <ProjectDesignsSection projectId={projectId} seedDesigns={[]} />
         </div>
 
         <aside className="h-fit lg:sticky lg:top-24">

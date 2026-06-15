@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SavedDesignsGalleryClient } from "@/components/dashboard/SavedDesignsGalleryClient";
 import { SavedDesignsCountLabel } from "@/components/dashboard/SavedDesignsCount";
-import { demoSavedDesigns } from "@/lib/saved-designs";
 
 export const metadata: Metadata = {
   title: "Saved Designs | RenoVision AI",
@@ -33,7 +32,7 @@ export default function SavedDesignsPage() {
             New Visualization
           </Link>
           <p className="text-xs text-muted sm:text-sm">
-            <SavedDesignsCountLabel fallback={demoSavedDesigns.length} />
+            <SavedDesignsCountLabel fallback={0} />
           </p>
         </div>
       </header>

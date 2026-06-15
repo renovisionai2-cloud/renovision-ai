@@ -1,6 +1,3 @@
-import { BeforeAfterSlider } from "@/components/ui/BeforeAfterSlider";
-import { beforeAfterImages } from "@/lib/data";
-
 export function Hero() {
   return (
     <section className="relative overflow-hidden pt-24 pb-12 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-20">
@@ -77,16 +74,13 @@ export function Hero() {
             </ul>
           </article>
 
-          <div className="animate-fade-in-up w-full" style={{ animationDelay: "0.4s", opacity: 0 }}>
-            <BeforeAfterSlider
-              size="hero"
-              beforeSrc={beforeAfterImages.before.src}
-              afterSrc={beforeAfterImages.after.src}
-              beforeAlt={beforeAfterImages.before.alt}
-              afterAlt={beforeAfterImages.after.alt}
-            />
-            <p className="mt-3 text-center text-xs text-muted sm:mt-4 sm:text-sm">
-              Drag to compare · Powered by RenoVision AI
+          <div
+            className="animate-fade-in-up premium-frame flex aspect-[4/3] w-full items-center justify-center rounded-3xl bg-gradient-to-br from-surface-elevated via-surface to-surface-elevated/60 p-8 text-center"
+            style={{ animationDelay: "0.4s", opacity: 0 }}
+          >
+            <p className="max-w-sm text-sm leading-relaxed text-muted sm:text-base">
+              Upload your room photo in the dashboard to generate a real before-and-after
+              AI visualization.
             </p>
           </div>
         </div>

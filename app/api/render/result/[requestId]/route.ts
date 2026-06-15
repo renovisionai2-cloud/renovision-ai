@@ -27,6 +27,15 @@ export async function GET(_request: Request, context: RouteContext) {
     const provider = getServerRenderProvider(session.provider);
     const result = await provider.fetchResult(requestId, session.modelId);
 
+    console.info("[renovision:diag:render-result-api] serving result to client", {
+      requestId,
+      modelId: session.modelId,
+      jobId: session.jobId,
+      uploadId: session.uploadId,
+      providerAfterImageUrl: result.afterImageUrl,
+      seed: result.seed ?? null,
+    });
+
     patchRenderSession(requestId, {
       status: "completed",
       afterImageUrl: result.afterImageUrl,

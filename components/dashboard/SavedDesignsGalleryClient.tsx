@@ -6,11 +6,11 @@ import {
   DESIGN_CATALOG_CHANGED_EVENT,
   getGalleryDesigns,
 } from "@/lib/design-variations-store";
-import { demoSavedDesigns, type SavedDesign } from "@/lib/saved-designs";
+import type { SavedDesign } from "@/lib/saved-designs";
 import { PROJECT_DESIGN_SAVED_EVENT } from "@/lib/project-design-store";
 
 export function SavedDesignsGalleryClient() {
-  const [designs, setDesigns] = useState<SavedDesign[]>(demoSavedDesigns);
+  const [designs, setDesigns] = useState<SavedDesign[]>([]);
 
   const refresh = useCallback(() => {
     setDesigns(getGalleryDesigns());

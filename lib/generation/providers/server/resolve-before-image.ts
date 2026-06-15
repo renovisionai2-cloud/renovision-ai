@@ -1,7 +1,5 @@
 import "server-only";
 
-import { readFile } from "node:fs/promises";
-import path from "node:path";
 import { RenderProviderError } from "@/lib/generation/errors";
 import { renderLog } from "@/lib/generation/logger";
 import {
@@ -9,7 +7,6 @@ import {
   getCachedRoomUpload,
 } from "@/lib/generation/providers/server/room-upload-cache";
 
-const SAMPLE_ROOM_RELATIVE = "/demo/before.jpg";
 const DIAG = "[renovision:diag:resolve-before-image]";
 
 function logDataUriDiagnostics(
@@ -29,33 +26,10 @@ function logDataUriDiagnostics(
   });
 }
 
-async function loadSampleRoomDataUrl(origin: string): Promise<string> {
-  try {
-    const sampleUrl = new URL(SAMPLE_ROOM_RELATIVE, origin).toString();
-    const response = await fetch(sampleUrl, { cache: "no-store" });
-    if (response.ok) {
-      const blob = await response.arrayBuffer();
-      const mimeType = response.headers.get("content-type") ?? "image/jpeg";
-      const buffer = Buffer.from(blob);
-      const dataUri = bufferToImageDataUrl(buffer, mimeType);
-      logDataUriDiagnostics("sample-room", mimeType, buffer.length, dataUri, "fetch");
-      return dataUri;
-    }
-  } catch {
-    // fall through to filesystem read (local dev)
-  }
-
-  const filePath = path.join(process.cwd(), "public", "demo", "before.jpg");
-  const buffer = await readFile(filePath);
-  const dataUri = bufferToImageDataUrl(buffer, "image/jpeg");
-  logDataUriDiagnostics("sample-room", "image/jpeg", buffer.length, dataUri, "filesystem");
-  return dataUri;
-}
-
 /** Resolves the before image for Fal from the server-side room upload cache. */
 export async function resolveBeforeImageDataUrl(
   uploadId: string,
-  requestOrigin: string,
+  _requestOrigin: string,
 ): Promise<string> {
   const cached = getCachedRoomUpload(uploadId);
   if (cached) {
@@ -73,11 +47,6 @@ export async function resolveBeforeImageDataUrl(
       "server-cache",
     );
     return dataUri;
-  }
-
-  if (uploadId === "sample-room") {
-    renderLog("Resolved sample room before image", { uploadId });
-    return loadSampleRoomDataUrl(requestOrigin);
   }
 
   throw new RenderProviderError(

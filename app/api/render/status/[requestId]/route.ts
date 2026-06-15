@@ -33,6 +33,16 @@ export async function GET(_request: Request, context: RouteContext) {
       error: status.error,
     });
 
+    if (status.status === "completed" && status.afterImageUrl) {
+      console.info("[renovision:diag:render-status-api] completed with after image", {
+        requestId,
+        modelId: session.modelId,
+        jobId: session.jobId,
+        uploadId: session.uploadId,
+        providerAfterImageUrl: status.afterImageUrl,
+      });
+    }
+
     renderLog("Render status", { requestId, status: status.status, phase: status.phase });
 
     return NextResponse.json({

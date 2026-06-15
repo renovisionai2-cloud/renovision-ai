@@ -13,7 +13,6 @@ import type {
 import {
   getPersistedBeforeImageUrl,
   getRoomUploadMeta,
-  SAMPLE_ROOM_SRC,
 } from "@/lib/room-upload-store";
 import type { UploadStyleId } from "@/lib/upload-styles";
 
@@ -30,13 +29,19 @@ async function buildRenderRequest(jobId: string, styleId: UploadStyleId): Promis
     );
   }
 
-  const beforeImageUrl = (await getPersistedBeforeImageUrl()) ?? SAMPLE_ROOM_SRC;
+  const beforeImageUrl = await getPersistedBeforeImageUrl();
+  if (!beforeImageUrl) {
+    throw new RenderProviderError(
+      "UPLOAD_MISSING",
+      "No uploaded room photo found.",
+    );
+  }
 
   return {
     jobId,
     styleId,
     uploadId: uploadMeta.id,
-    beforeStorageKey: uploadMeta.source === "upload" ? uploadMeta.storageKey : undefined,
+    beforeStorageKey: uploadMeta.storageKey,
     beforeImageUrl,
   };
 }

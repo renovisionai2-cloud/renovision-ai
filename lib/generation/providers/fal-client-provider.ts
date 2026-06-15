@@ -135,6 +135,16 @@ export const falClientRenderProvider: RenderProvider = {
       );
     }
 
+    const resultSource = status.afterImageUrl ? "status-poll" : "result-api";
+    console.info("[renovision:diag:persist] about to persist provider image url", {
+      requestId: externalJobId,
+      jobId: request.jobId,
+      styleId: request.styleId,
+      resultSource,
+      afterImageUrl,
+      beforeImageUrlFromRequest: request.beforeImageUrl?.slice(0, 120) ?? null,
+    });
+
     renderLog("Persisting generated design", {
       jobId: request.jobId,
       afterImageUrl,

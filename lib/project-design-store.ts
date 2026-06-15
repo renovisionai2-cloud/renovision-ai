@@ -1,4 +1,4 @@
-import { demoProjectDesigns, demoProjects, type ProjectDesign } from "@/lib/projects";
+import { isKnownProjectId, PROJECT_NAME_TO_ID, type ProjectDesign } from "@/lib/projects";
 import type { SavedDesign } from "@/lib/saved-designs";
 
 export const PROJECT_DESIGN_STORE_KEY = "renovision-project-design-saves";
@@ -19,13 +19,6 @@ export type SavedProjectDesignRecord = {
 type ProjectDesignStore = {
   version: 1;
   saves: SavedProjectDesignRecord[];
-};
-
-const PROJECT_NAME_TO_ID: Record<string, string> = {
-  "Main Floor Refresh": "main-floor-refresh",
-  "Kitchen Concept": "kitchen-concept",
-  "Basement Remodel": "basement-remodel",
-  "Bedroom Concept": "bedroom-concept",
 };
 
 function emptyStore(): ProjectDesignStore {
@@ -54,23 +47,6 @@ export function getProjectIdForDesign(design: SavedDesign): string | null {
   return PROJECT_NAME_TO_ID[design.projectName] ?? null;
 }
 
-export function isDesignSavedToProject(savedDesignId: string, projectId: string): boolean {
-  const inDemo = demoProjectDesigns.some(
-    (entry) => entry.projectId === projectId && entry.savedDesignId === savedDesignId,
-  );
-  if (inDemo) return true;
-
-  return readStore().saves.some(
-    (entry) => entry.projectId === projectId && entry.savedDesignId === savedDesignId,
-  );
-}
-
-export function isDesignSavedToLinkedProject(design: SavedDesign): boolean {
-  const projectId = getProjectIdForDesign(design);
-  if (!projectId) return false;
-  return isDesignSavedToProject(design.id, projectId);
-}
-
 function recordToProjectDesign(record: SavedProjectDesignRecord): ProjectDesign {
   return {
     id: record.id,
@@ -81,6 +57,13 @@ function recordToProjectDesign(record: SavedProjectDesignRecord): ProjectDesign 
     afterImage: record.afterImage,
     savedDesignId: record.savedDesignId,
   };
+}
+
+export function getDesignsForProjectFromStore(projectId: string): ProjectDesign[] {
+  return readStore()
+    .saves.filter((save) => save.projectId === projectId)
+    .sort((a, b) => b.savedAt.localeCompare(a.savedAt))
+    .map(recordToProjectDesign);
 }
 
 export function mergeDesignsForProject(
@@ -101,12 +84,24 @@ export function mergeDesignsForProject(
   return merged;
 }
 
+export function isDesignSavedToProject(savedDesignId: string, projectId: string): boolean {
+  return readStore().saves.some(
+    (entry) => entry.projectId === projectId && entry.savedDesignId === savedDesignId,
+  );
+}
+
+export function isDesignSavedToLinkedProject(design: SavedDesign): boolean {
+  const projectId = getProjectIdForDesign(design);
+  if (!projectId) return false;
+  return isDesignSavedToProject(design.id, projectId);
+}
+
 export type SaveDesignToProjectResult = "saved" | "already_saved" | "error";
 
 /** Persists a design save to localStorage (mock layer before Supabase). */
 export function saveDesignToProject(design: SavedDesign): SaveDesignToProjectResult {
   const projectId = getProjectIdForDesign(design);
-  if (!projectId || !demoProjects.some((project) => project.id === projectId)) {
+  if (!projectId || !isKnownProjectId(projectId)) {
     return "error";
   }
 

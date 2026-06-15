@@ -187,15 +187,3 @@ export const testimonials = [
     rating: 5,
   },
 ] as const;
-
-/** Local assets in /public/demo — avoids broken remote URLs and layout gaps */
-export const beforeAfterImages = {
-  before: {
-    src: "/demo/before.jpg",
-    alt: "Room before renovation visualization",
-  },
-  after: {
-    src: "/demo/after.jpg",
-    alt: "Room after RenoVision AI visualization",
-  },
-} as const;

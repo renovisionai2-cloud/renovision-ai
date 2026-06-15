@@ -1,9 +1,9 @@
 import Link from "next/link";
-import type { DemoProject } from "@/lib/projects";
+import type { Project } from "@/lib/projects";
 import { ProjectCard } from "@/components/dashboard/ProjectCard";
 
 type ProjectsListProps = {
-  projects: DemoProject[];
+  projects: Project[];
 };
 
 export function ProjectsList({ projects }: ProjectsListProps) {

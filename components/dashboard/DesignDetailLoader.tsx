@@ -9,19 +9,17 @@ import { getDesignTitle, type SavedDesign } from "@/lib/saved-designs";
 
 type DesignDetailLoaderProps = {
   designId: string;
-  initialDesign: SavedDesign | null;
 };
 
-export function DesignDetailLoader({ designId, initialDesign }: DesignDetailLoaderProps) {
-  const [design, setDesign] = useState<SavedDesign | null>(initialDesign);
-  const [resolved, setResolved] = useState(Boolean(initialDesign));
+export function DesignDetailLoader({ designId }: DesignDetailLoaderProps) {
+  const [design, setDesign] = useState<SavedDesign | null>(null);
+  const [resolved, setResolved] = useState(false);
 
   useEffect(() => {
-    if (initialDesign) return;
     const found = resolveDesignById(designId);
     setDesign(found ?? null);
     setResolved(true);
-  }, [designId, initialDesign]);
+  }, [designId]);
 
   if (!resolved) {
     return <p className="text-sm text-muted">Loading design preview…</p>;

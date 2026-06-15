@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ProjectsList } from "@/components/dashboard/ProjectsList";
-import { demoProjects } from "@/lib/projects";
+import { listCatalogProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "My Projects | RenoVision AI",
@@ -9,8 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function ProjectsPage() {
-  const activeCount = demoProjects.filter((p) => p.status === "Active").length;
-  const draftCount = demoProjects.filter((p) => p.status === "Draft").length;
+  const projects = listCatalogProjects();
 
   return (
     <>
@@ -35,12 +34,12 @@ export default function ProjectsPage() {
             New Visualization
           </Link>
           <p className="text-xs text-muted sm:text-sm">
-            {activeCount} active · {draftCount} draft · {demoProjects.length} total
+            {projects.length} project buckets
           </p>
         </div>
       </header>
 
-      <ProjectsList projects={demoProjects} />
+      <ProjectsList projects={projects} />
     </>
   );
 }
