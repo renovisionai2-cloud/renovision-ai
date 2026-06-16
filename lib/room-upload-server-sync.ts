@@ -3,6 +3,7 @@
 import {
   getRoomUploadBlob,
   getRoomUploadMeta,
+  SAMPLE_ROOM_SRC,
   type RoomUploadRecord,
 } from "@/lib/room-upload-store";
 
@@ -34,6 +35,16 @@ async function postRoomImageToServer(
 
 /** Stores the active room image on the server (multipart) for render submission. */
 export async function syncRoomUploadToServer(record: RoomUploadRecord): Promise<void> {
+  if (record.source === "sample") {
+    const response = await fetch(SAMPLE_ROOM_SRC);
+    if (!response.ok) {
+      throw new Error("Unable to load the sample room for rendering.");
+    }
+    const blob = await response.blob();
+    await postRoomImageToServer(record, blob);
+    return;
+  }
+
   const blob = await getRoomUploadBlob(record.storageKey);
   if (!blob) {
     throw new Error("Unable to read the uploaded room photo.");

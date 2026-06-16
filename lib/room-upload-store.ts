@@ -17,7 +17,9 @@ export const ACCEPTED_UPLOAD_MIME_TYPES = [
 export const ACCEPTED_UPLOAD_ACCEPT =
   "image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp";
 
-export type RoomUploadSource = "upload";
+export const SAMPLE_ROOM_SRC = "/demo/before.jpg";
+
+export type RoomUploadSource = "upload" | "sample";
 
 /** App-facing upload record — maps to a future Supabase `room_uploads` row + storage object. */
 export type RoomUploadRecord = {
@@ -159,7 +161,23 @@ export async function persistRoomUpload(file: File): Promise<RoomUploadRecord> {
   return record;
 }
 
-/** Reads the persisted upload blob from IndexedDB. */
+/** Persists the bundled demo sample as the active before image. */
+export async function persistSampleRoomUpload(): Promise<RoomUploadRecord> {
+  const record: RoomUploadRecord = {
+    id: "sample-room",
+    fileName: "sample-room.jpg",
+    mimeType: "image/jpeg",
+    sizeBytes: 0,
+    uploadedAt: new Date().toISOString(),
+    source: "sample",
+    storageKey: "sample-room",
+  };
+
+  writeRoomUploadMeta(record);
+  return record;
+}
+
+/** Reads the persisted upload blob from IndexedDB (upload source only). */
 export async function getRoomUploadBlob(storageKey: string): Promise<Blob | null> {
   return idbGetBlob(storageKey);
 }
@@ -168,6 +186,10 @@ export async function getRoomUploadBlob(storageKey: string): Promise<Blob | null
 export async function getPersistedBeforeImageUrl(): Promise<string | null> {
   const meta = getRoomUploadMeta();
   if (!meta) return null;
+
+  if (meta.source === "sample") {
+    return SAMPLE_ROOM_SRC;
+  }
 
   const blob = await idbGetBlob(meta.storageKey);
   if (!blob) return null;

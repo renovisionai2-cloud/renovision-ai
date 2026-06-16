@@ -1,5 +1,7 @@
 import "server-only";
 
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { RenderProviderError } from "@/lib/generation/errors";
 import { renderLog } from "@/lib/generation/logger";
 import {
@@ -7,29 +9,30 @@ import {
   getCachedRoomUpload,
 } from "@/lib/generation/providers/server/room-upload-cache";
 
-const DIAG = "[renovision:diag:resolve-before-image]";
+const SAMPLE_ROOM_RELATIVE = "/demo/before.jpg";
 
-function logDataUriDiagnostics(
-  uploadId: string,
-  mimeType: string,
-  sizeBytes: number,
-  dataUri: string,
-  source: string,
-): void {
-  console.info(DIAG, {
-    uploadId,
-    mimeType,
-    sizeBytes,
-    source,
-    dataUriLength: dataUri.length,
-    dataUriPrefix100: dataUri.slice(0, 100),
-  });
+async function loadSampleRoomDataUrl(origin: string): Promise<string> {
+  try {
+    const sampleUrl = new URL(SAMPLE_ROOM_RELATIVE, origin).toString();
+    const response = await fetch(sampleUrl, { cache: "no-store" });
+    if (response.ok) {
+      const blob = await response.arrayBuffer();
+      const mimeType = response.headers.get("content-type") ?? "image/jpeg";
+      return bufferToImageDataUrl(Buffer.from(blob), mimeType);
+    }
+  } catch {
+    // fall through to filesystem read (local dev)
+  }
+
+  const filePath = path.join(process.cwd(), "public", "demo", "before.jpg");
+  const buffer = await readFile(filePath);
+  return bufferToImageDataUrl(buffer, "image/jpeg");
 }
 
 /** Resolves the before image for Fal from the server-side room upload cache. */
 export async function resolveBeforeImageDataUrl(
   uploadId: string,
-  _requestOrigin: string,
+  requestOrigin: string,
 ): Promise<string> {
   const cached = getCachedRoomUpload(uploadId);
   if (cached) {
@@ -38,15 +41,12 @@ export async function resolveBeforeImageDataUrl(
       sizeBytes: cached.sizeBytes,
       mimeType: cached.mimeType,
     });
-    const dataUri = bufferToImageDataUrl(cached.buffer, cached.mimeType);
-    logDataUriDiagnostics(
-      uploadId,
-      cached.mimeType,
-      cached.sizeBytes,
-      dataUri,
-      "server-cache",
-    );
-    return dataUri;
+    return bufferToImageDataUrl(cached.buffer, cached.mimeType);
+  }
+
+  if (uploadId === "sample-room") {
+    renderLog("Resolved sample room before image", { uploadId });
+    return loadSampleRoomDataUrl(requestOrigin);
   }
 
   throw new RenderProviderError(
